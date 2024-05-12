@@ -4,12 +4,16 @@
  */
 package com.mycompany.atividade01;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Ewerton
  */
-public class VeiculoPlacaException  extends Exception {
+public class VeiculoPlacaException extends Exception {
+
     public VeiculoPlacaException(String message) {
-        super(message);
+        JOptionPane.showMessageDialog(null, message);
+
     }
 }

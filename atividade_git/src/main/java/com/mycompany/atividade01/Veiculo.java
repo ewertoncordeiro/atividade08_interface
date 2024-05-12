@@ -30,7 +30,7 @@ public abstract class Veiculo {
 
     public final void setPlaca(String placa) throws  VeiculoPlacaException{
        if (placa.isEmpty()) {
-            throw new VeiculoPlacaException("Placa nao pode estar vazia");
+            throw new VeiculoPlacaException("Placa não pode estar vazia");
        }
         this.placa = placa;
     }

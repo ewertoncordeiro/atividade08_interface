@@ -28,6 +28,10 @@ public class BDVeiculos {
         }
         return BDVeiculosUnic;
     }
+    
+       public List<Passeio> getBdPas(){
+            return listaPasseio;
+        }
 
     //metodos classe passeio
     //buscar
@@ -58,7 +62,7 @@ public class BDVeiculos {
     }
 
     // insert
-    public Passeio cadPas(Passeio pas) throws VeicExistException {
+    public Passeio cadPas(Passeio pas) {
         if (achaPlacaPasseio(pas) == null) {
             listaPasseio.add(pas);
             return pas;
