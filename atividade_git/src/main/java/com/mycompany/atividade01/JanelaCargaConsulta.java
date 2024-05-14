@@ -4,7 +4,6 @@
  */
 package com.mycompany.atividade01;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,16 +19,16 @@ import javax.swing.JTextField;
  *
  * @author Ewerton
  */
-public class JanelaPasseioConsulta extends JFrame {
-
-    private static Passeio veiculoPasseio = new Passeio();
+public class JanelaCargaConsulta {
+    private static Carga veiculoCarga = new Carga();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
 
-    private JFrame telaPasseio = new JFrame("Consulta / Excluir Passeio");
+    private JFrame telaPasseio = new JFrame("Consulta / Excluir Carga");
     private JButton btConsultar = new JButton();
     private JButton btExcluir = new JButton();
     private JButton btSair = new JButton();
-    private JTextField cxPas = new JTextField(20);
+    private JTextField cxTara = new JTextField(20);
+    private JTextField cxCarga = new JTextField(20);
     private JTextField cxPlaca = new JTextField(20);
     private JTextField cxMarca = new JTextField(20);
     private JTextField cxModelo = new JTextField(20);
@@ -42,7 +41,8 @@ public class JanelaPasseioConsulta extends JFrame {
 
     public void carregaJanela() {
 
-        JLabel rtPas = new JLabel("  Qtd. Passageiros");
+        JLabel rtTara = new JLabel("  Tara");
+        JLabel rtCarga = new JLabel("  Carga Max.");
         JLabel rtPlaca = new JLabel("  Informe a placa");
         JLabel rtMarca = new JLabel("  Marca");
         JLabel rtModelo = new JLabel("  Modelo");
@@ -53,8 +53,10 @@ public class JanelaPasseioConsulta extends JFrame {
         JLabel rtPotencia = new JLabel("  Potencia");
         telaPasseio.add(rtPlaca);
         telaPasseio.add(cxPlaca);
-        telaPasseio.add(rtPas);
-        telaPasseio.add(cxPas);
+        telaPasseio.add(rtTara);
+        telaPasseio.add(cxTara);
+        telaPasseio.add(rtCarga);
+        telaPasseio.add(cxCarga);
         telaPasseio.add(rtMarca);
         telaPasseio.add(cxMarca);
         telaPasseio.add(rtModelo);
@@ -115,19 +117,20 @@ public class JanelaPasseioConsulta extends JFrame {
     }
 
     private void consultar() throws VeiculoPlacaException {
-        veiculoPasseio = new Passeio();
-        veiculoPasseio.setPlaca(cxPlaca.getText());
-        veiculoPasseio = bdpass.achaPlacaPasseio(veiculoPasseio);
-        if (veiculoPasseio != null) {
-           cxPas.setText(Integer.toString(veiculoPasseio.getQtdPassageiros()));
-           cxCor.setText(veiculoPasseio.getCor());
-           cxMarca.setText(veiculoPasseio.getMarca());
-           cxModelo.setText(veiculoPasseio.getModelo());
-           cxPlaca.setText(veiculoPasseio.getPlaca());
-           cxRoda.setText(Integer.toString(veiculoPasseio.getQtdRodas()));
-           cxVeloc.setText(Integer.toString(veiculoPasseio.getQtdRodas()));
-           cxPist.setText(Integer.toString(veiculoPasseio.getMotor().getQtdPist()));
-           cxPotencia.setText(Integer.toString(veiculoPasseio.getMotor().getPotencia()));
+        veiculoCarga = new Carga();
+        veiculoCarga.setPlaca(cxPlaca.getText());
+        veiculoCarga = bdpass.achaPlacaCarga(veiculoCarga);
+        if (veiculoCarga != null) {
+           cxTara.setText(Integer.toString(veiculoCarga.getTara()));
+           cxCarga.setText(Integer.toString(veiculoCarga.getCargaMax()));
+           cxCor.setText(veiculoCarga.getCor());
+           cxMarca.setText(veiculoCarga.getMarca());
+           cxModelo.setText(veiculoCarga.getModelo());
+           cxPlaca.setText(veiculoCarga.getPlaca());
+           cxRoda.setText(Integer.toString(veiculoCarga.getQtdRodas()));
+           cxVeloc.setText(Integer.toString(veiculoCarga.getQtdRodas()));
+           cxPist.setText(Integer.toString(veiculoCarga.getMotor().getQtdPist()));
+           cxPotencia.setText(Integer.toString(veiculoCarga.getMotor().getPotencia()));
 
         } else {
             JOptionPane.showMessageDialog(null, "Veículo não localizado");
@@ -136,14 +139,14 @@ public class JanelaPasseioConsulta extends JFrame {
     }
 
     public void excluir() {
-        veiculoPasseio = new Passeio();
+        veiculoCarga = new Carga();
         try {
-            veiculoPasseio.setPlaca(cxPlaca.getText());
+            veiculoCarga.setPlaca(cxPlaca.getText());
         } catch (VeiculoPlacaException ex) {
-            Logger.getLogger(JanelaPasseioConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
         }
-        veiculoPasseio = bdpass.removePesCod(veiculoPasseio);
-        if (veiculoPasseio == null) {
+        veiculoCarga = bdpass.removeCarCod(veiculoCarga);
+        if (veiculoCarga == null) {
             JOptionPane.showMessageDialog(null, "Veículo excluído com sucesso");
             limpar();
         } else {
@@ -153,7 +156,8 @@ public class JanelaPasseioConsulta extends JFrame {
     }
     
       private void limpar() {
-        cxPas.setText("");
+        cxTara.setText("");
+        cxCarga.setText("");
         cxPlaca.setText("");
         cxMarca.setText("");
         cxModelo.setText("");

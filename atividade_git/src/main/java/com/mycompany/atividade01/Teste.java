@@ -27,10 +27,8 @@ import javax.swing.JPanel;
  */
 public class Teste {
 
-  
     private static Carga veiculoCarga = new Carga();
 
-   
     private static BDVeiculos bdcar = BDVeiculos.gerarGerpes();
     private static boolean opcaoContinuar = true;
 
@@ -38,18 +36,19 @@ public class Teste {
     private static JFrame jan1 = new JFrame("Titulo Inicial");
     private static JLabel rtCod = new JLabel("Texto Inicial");
 
-    
     private static JMenuItem itMenuSair = new JMenuItem("Sair");
-   
-    private static JMenu itMenuCarga = new JMenu("Carga");
-    
+
+    private static JMenu menuCarga = new JMenu("Carga");
+    private static JMenuItem itMenuCargaCad = new JMenuItem("Cadastrar");
+    private static JMenuItem itMenuCargaCon = new JMenuItem("Consultar / Excluir pela placa");
+    private static JMenuItem itMenuCargaImpE = new JMenuItem("Imprimir / Excluir todos");
+
     private static JMenu menuPrincipal = new JMenu("Menu");
     private static JMenu menuPasseio = new JMenu("Passeio");
     private static JMenuItem itMenuPasseioCad = new JMenuItem("Cadastrar");
     private static JMenuItem itMenuPasseioCon = new JMenuItem("Consultar / Excluir pela placa");
     private static JMenuItem itMenuPasseioImpE = new JMenuItem("Imprimir / Excluir todos");
     private static JMenuBar barraMenu = new JMenuBar();
-
 
     public static void main(String args[]) {
 
@@ -58,40 +57,26 @@ public class Teste {
         jan1.setSize(larg, alt);
         jan1.setTitle("Gestão de Veículos");
         jan1.setDefaultCloseOperation(jan1.EXIT_ON_CLOSE);
-
-
-        // Adicionando os componentes ao painel
         rtCod.setText("Selecione um item do Menu");
-      ///  cxCod.setColumns(10);
-        //btSair.setText("Sair");
-
-        //adicionar “Item de Menu” ao “Menu”
-        //submenus
-            
-        menuPasseio.add(itMenuPasseioCad); 
+        menuPasseio.add(itMenuPasseioCad);
         menuPasseio.add(itMenuPasseioCon);
         menuPasseio.add(itMenuPasseioImpE);
-        
-        
-        
-        menuPrincipal.add(menuPasseio);  
-       
-        menuPrincipal.add(itMenuCarga); 
-        menuPrincipal.add(itMenuSair); 
-    
-        barraMenu.add(menuPrincipal); 
+        menuCarga.add(itMenuCargaCad);
+        menuCarga.add(itMenuCargaCon);
+        menuCarga.add(itMenuCargaImpE);
+        menuPrincipal.add(menuPasseio);
+        menuPrincipal.add(menuCarga);
+        menuPrincipal.add(itMenuSair);
+        barraMenu.add(menuPrincipal);
         jan1.setJMenuBar(barraMenu);
 
         jan1.add(rtCod);
-     //   jan1.add(cxCod);
-       // jan1.add(btSair);
+        // jan1.add(cxCod);
+        // jan1.add(btSair);
         jan1.setLayout(new FlowLayout());
         jan1.setVisible(true);
         jan1.setLocationRelativeTo(null);
-     //   jan1.revalidate();
-   //     jan1.repaint();
 
-        
         itMenuSair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
@@ -101,28 +86,50 @@ public class Teste {
             }
         }
         );
-        
-          itMenuPasseioCad.addActionListener(new ActionListener() {
+
+        itMenuPasseioCad.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 JanelaPasseio jpass = new JanelaPasseio();
-                 jpass.carregaJanela();
-            }}
-        );
-    
-       itMenuPasseioCon.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                 JanelaPasseioConsulta jpass = new JanelaPasseioConsulta();
-                 jpass.carregaJanela();
-                
+                jpass.carregaJanela();
             }
         }
         );
-    
-    
-    itMenuPasseioImpE.addActionListener(new ActionListener() {
+
+        itMenuPasseioCon.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
-                  JanelaPasseioImpressao jpass = new JanelaPasseioImpressao();
-                 jpass.carregaJanela();
+                JanelaPasseioConsulta jpass = new JanelaPasseioConsulta();
+                jpass.carregaJanela();
+            }
+        }
+        );
+
+        itMenuPasseioImpE.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                JanelaPasseioImpressao jpass = new JanelaPasseioImpressao();
+                jpass.carregaJanela();
+            }
+        }
+        );
+        
+        itMenuCargaCad.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                JanelaCarga jcar = new JanelaCarga();
+                jcar.carregaJanela();
+            }
+        }
+        );
+        
+          itMenuCargaCon.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                JanelaCargaConsulta jcar = new JanelaCargaConsulta();
+                jcar.carregaJanela();
+            }
+        }
+        );
+            itMenuCargaImpE.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent evt) {
+                JanelaCargaImpressao jcar = new JanelaCargaImpressao();
+                jcar.carregaJanela();
             }
         }
         );

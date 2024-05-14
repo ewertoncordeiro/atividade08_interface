@@ -4,7 +4,6 @@
  */
 package com.mycompany.atividade01;
 
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,16 +19,18 @@ import javax.swing.JTextField;
  *
  * @author Ewerton
  */
-public class JanelaPasseio extends JFrame {
-
-    private static Passeio veiculoPasseio = new Passeio();
+public class JanelaCarga extends JFrame{
+    
+    
+    private static Carga veiculoCarga = new Carga();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
-    private JFrame telaPasseio = new JFrame("Cadastro Passeio");
+    private JFrame telaCarga = new JFrame("Cadastro Carga");
     private JButton btCdastrar = new JButton();
     private JButton btLimpar = new JButton();
     private JButton btNovo = new JButton();
     private JButton btSair = new JButton();
-    private JTextField cxPas = new JTextField(20);
+    private JTextField cxTara = new JTextField(20);
+    private JTextField cxCarga = new JTextField(20);
     private JTextField cxPlaca = new JTextField(20);
     private JTextField cxMarca = new JTextField(20);
     private JTextField cxModelo = new JTextField(20);
@@ -42,7 +43,8 @@ public class JanelaPasseio extends JFrame {
 
     public void carregaJanela() {
 
-        JLabel rtPas = new JLabel("  Qtd. Passageiros");
+        JLabel rtPas = new JLabel("  Tara");
+        JLabel rtCarga = new JLabel("  Carga");
         JLabel rtPlaca = new JLabel("  Placa");
         JLabel rtMarca = new JLabel("  Marca");
         JLabel rtModelo = new JLabel("  Modelo");
@@ -51,24 +53,26 @@ public class JanelaPasseio extends JFrame {
         JLabel rtVeloc = new JLabel("  Velocidade");
         JLabel rtPist = new JLabel("  Qtd. Pistoes");
         JLabel rtPotencia = new JLabel("  Potencia");
-        telaPasseio.add(rtPas);
-        telaPasseio.add(cxPas);
-        telaPasseio.add(rtPlaca);
-        telaPasseio.add(cxPlaca);
-        telaPasseio.add(rtMarca);
-        telaPasseio.add(cxMarca);
-        telaPasseio.add(rtModelo);
-        telaPasseio.add(cxModelo);
-        telaPasseio.add(rtCor);
-        telaPasseio.add(cxCor);
-        telaPasseio.add(rtRoda);
-        telaPasseio.add(cxRoda);
-        telaPasseio.add(rtVeloc);
-        telaPasseio.add(cxVeloc);
-        telaPasseio.add(rtPist);
-        telaPasseio.add(cxPist);
-        telaPasseio.add(rtPotencia);
-        telaPasseio.add(cxPotencia);
+        telaCarga.add(rtPas);
+        telaCarga.add(cxTara);
+        telaCarga.add(rtCarga);
+        telaCarga.add(cxCarga);
+        telaCarga.add(rtPlaca);
+        telaCarga.add(cxPlaca);
+        telaCarga.add(rtMarca);
+        telaCarga.add(cxMarca);
+        telaCarga.add(rtModelo);
+        telaCarga.add(cxModelo);
+        telaCarga.add(rtCor);
+        telaCarga.add(cxCor);
+        telaCarga.add(rtRoda);
+        telaCarga.add(cxRoda);
+        telaCarga.add(rtVeloc);
+        telaCarga.add(cxVeloc);
+        telaCarga.add(rtPist);
+        telaCarga.add(cxPist);
+        telaCarga.add(rtPotencia);
+        telaCarga.add(cxPotencia);
         btCdastrar.setText("Cadastrar");
         btCdastrar.setMnemonic('C');
         btNovo.setText("Novo");
@@ -77,21 +81,22 @@ public class JanelaPasseio extends JFrame {
         btLimpar.setMnemonic('L');
         btSair.setText("Sair");
         btSair.setMnemonic('S');
-        telaPasseio.add(btCdastrar);
-        telaPasseio.add(btNovo);
-        telaPasseio.add(btLimpar);
-        telaPasseio.add(btSair);
-        telaPasseio.setSize(larg, alt);
-        telaPasseio.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        telaPasseio.setLocationRelativeTo(null);
-        telaPasseio.setLayout(new GridLayout(12, 2, 10, 10));
-        telaPasseio.setVisible(true);
-
+        telaCarga.add(btCdastrar);
+        telaCarga.add(btNovo);
+        telaCarga.add(btLimpar);
+        telaCarga.add(btSair);
+        telaCarga.setSize(larg, alt);
+        telaCarga.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        telaCarga.setLocationRelativeTo(null); 
+        telaCarga.setLayout(new GridLayout(13, 2, 10, 10));
+        telaCarga.setVisible(true);
+        
+        
         btSair.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
                 if (resp == 0) {
-                    telaPasseio.dispose();
+                    telaCarga.dispose();
                 }
             }
         }
@@ -102,13 +107,13 @@ public class JanelaPasseio extends JFrame {
                 try {
                     cadastrar();
                 } catch (VelocException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (VeicExistException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (VeiculoPlacaException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
                 } catch (NumberFormatException nfe) {
-                    JOptionPane.showMessageDialog(null, "Valor inválido  nos campos numericos");
+                    JOptionPane.showMessageDialog(null, "Valor inválido nos campos numericos");
                 }
             }
         }
@@ -124,18 +129,18 @@ public class JanelaPasseio extends JFrame {
     }
 
     private void cadastrar() throws VelocException, VeicExistException, VeiculoPlacaException {
-        veiculoPasseio = new Passeio();
-        veiculoPasseio.setPlaca(cxPlaca.getText());
-        veiculoPasseio.setMarca(cxMarca.getText());
-        veiculoPasseio.setModelo(cxModelo.getText());
-        veiculoPasseio.setCor(cxCor.getText());
-        veiculoPasseio.setVelocMax(Float.parseFloat(cxVeloc.getText()));
-        veiculoPasseio.setQtdRodas(Integer.parseInt(cxRoda.getText()));
-        veiculoPasseio.getMotor().setPotencia(Integer.parseInt(cxPotencia.getText()));
-        veiculoPasseio.getMotor().setQtdPist(Integer.parseInt(cxPist.getText()));
-        veiculoPasseio.setQtdPassageiros(Integer.parseInt(cxPas.getText()));
-        veiculoPasseio = bdpass.cadPas(veiculoPasseio);
-        if (veiculoPasseio != null) {
+        veiculoCarga = new Carga();
+        veiculoCarga.setPlaca(cxPlaca.getText());
+        veiculoCarga.setMarca(cxMarca.getText());
+        veiculoCarga.setModelo(cxModelo.getText());
+        veiculoCarga.setCor(cxCor.getText());
+        veiculoCarga.setVelocMax(Float.parseFloat(cxVeloc.getText()));
+        veiculoCarga.setQtdRodas(Integer.parseInt(cxRoda.getText()));
+        veiculoCarga.getMotor().setPotencia(Integer.parseInt(cxPotencia.getText()));
+        veiculoCarga.getMotor().setQtdPist(Integer.parseInt(cxPist.getText()));
+        veiculoCarga.setTara(Integer.parseInt(cxTara.getText()));
+        veiculoCarga = bdpass.cadPas(veiculoCarga);
+        if (veiculoCarga != null) {
             JOptionPane.showMessageDialog(null, "Veículo incluído com sucesso");
             limpar();
         } else {
@@ -145,7 +150,8 @@ public class JanelaPasseio extends JFrame {
     }
 
     private void limpar() {
-        cxPas.setText("");
+        cxTara.setText("");
+        cxCarga.setText("");
         cxPlaca.setText("");
         cxMarca.setText("");
         cxModelo.setText("");
@@ -156,4 +162,5 @@ public class JanelaPasseio extends JFrame {
         cxPotencia.setText("");
     }
 
+    
 }

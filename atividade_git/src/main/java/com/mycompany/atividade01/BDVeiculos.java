@@ -32,6 +32,12 @@ public class BDVeiculos {
        public List<Passeio> getBdPas(){
             return listaPasseio;
         }
+       
+       public static void excluirAll(){
+            listaPasseio = new ArrayList<>();
+            listaCarga = new ArrayList<>();
+           
+        }
 
     //metodos classe passeio
     //buscar
@@ -89,7 +95,7 @@ public class BDVeiculos {
     }
 
     //delete
-    public Carga removePesCod(Carga car) {
+    public Carga removeCarCod(Carga car) {
         Carga car1 = achaPlacaCarga(car);
         if (car1 != null) {
             listaCarga.remove(car1);
