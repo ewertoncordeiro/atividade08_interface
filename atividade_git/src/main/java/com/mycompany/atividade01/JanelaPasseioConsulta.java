@@ -4,13 +4,12 @@
  */
 package com.mycompany.atividade01;
 
-import java.awt.FlowLayout;
+import java.awt.Dialog;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -20,12 +19,11 @@ import javax.swing.JTextField;
  *
  * @author Ewerton
  */
-public class JanelaPasseioConsulta extends JFrame {
+public class JanelaPasseioConsulta implements ActionListener {
 
     private static Passeio veiculoPasseio = new Passeio();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
-
-    private JFrame telaPasseio = new JFrame("Consulta / Excluir Passeio");
+    private JDialog telaPasseio = new JDialog();
     private JButton btConsultar = new JButton();
     private JButton btExcluir = new JButton();
     private JButton btSair = new JButton();
@@ -51,6 +49,7 @@ public class JanelaPasseioConsulta extends JFrame {
         JLabel rtVeloc = new JLabel("  Velocidade");
         JLabel rtPist = new JLabel("  Qtd. Pistoes");
         JLabel rtPotencia = new JLabel("  Potencia");
+        telaPasseio.setTitle("Consultar / Excluir pela placa");
         telaPasseio.add(rtPlaca);
         telaPasseio.add(cxPlaca);
         telaPasseio.add(rtPas);
@@ -69,6 +68,14 @@ public class JanelaPasseioConsulta extends JFrame {
         telaPasseio.add(cxPist);
         telaPasseio.add(rtPotencia);
         telaPasseio.add(cxPotencia);
+        cxPas.setEditable(false);
+        cxMarca.setEditable(false);
+        cxModelo.setEditable(false);
+        cxCor.setEditable(false);
+        cxRoda.setEditable(false);
+        cxVeloc.setEditable(false);
+        cxPist.setEditable(false);
+        cxPotencia.setEditable(false);
         btConsultar.setText("Consultar");
         btConsultar.setMnemonic('C');
         btExcluir.setText("Excluir");
@@ -78,43 +85,19 @@ public class JanelaPasseioConsulta extends JFrame {
         telaPasseio.add(btConsultar);
         telaPasseio.add(btExcluir);
         telaPasseio.add(btSair);
+        btSair.addActionListener(this);
+        btExcluir.addActionListener(this);
+        btConsultar.addActionListener(this);
         telaPasseio.setSize(larg, alt);
         telaPasseio.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        telaPasseio.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         telaPasseio.setLocationRelativeTo(null);
         telaPasseio.setLayout(new GridLayout(12, 2, 10, 10));
         telaPasseio.setVisible(true);
 
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
-                if (resp == 0) {
-                    telaPasseio.dispose();
-                }
-            }
-        }
-        );
-
-        btConsultar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-
-                try {
-                    consultar();
-                } catch (VeiculoPlacaException ex) {
-                    Logger.getLogger(JanelaPasseioConsulta.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        );
-
-        btExcluir.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                excluir();
-            }
-        });
-
     }
 
-    private void consultar() throws VeiculoPlacaException {
+    private void consultar() {
         veiculoPasseio = new Passeio();
         veiculoPasseio.setPlaca(cxPlaca.getText());
         veiculoPasseio = bdpass.achaPlacaPasseio(veiculoPasseio);
@@ -131,17 +114,13 @@ public class JanelaPasseioConsulta extends JFrame {
 
         } else {
             JOptionPane.showMessageDialog(null, "Veículo não localizado");
-            cxPlaca.setText("");
+             limpar();
         }
     }
 
     public void excluir() {
         veiculoPasseio = new Passeio();
-        try {
-            veiculoPasseio.setPlaca(cxPlaca.getText());
-        } catch (VeiculoPlacaException ex) {
-            Logger.getLogger(JanelaPasseioConsulta.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        veiculoPasseio.setPlaca(cxPlaca.getText());
         veiculoPasseio = bdpass.removePesCod(veiculoPasseio);
         if (veiculoPasseio == null) {
             JOptionPane.showMessageDialog(null, "Veículo excluído com sucesso");
@@ -162,5 +141,26 @@ public class JanelaPasseioConsulta extends JFrame {
         cxVeloc.setText("");
         cxPist.setText("");
         cxPotencia.setText("");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent act) {
+
+        if (act.getSource().equals(btSair)) {
+            int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
+            if (resp == 0) {
+                telaPasseio.dispose();
+            }
+
+        } else if (act.getSource().equals(btExcluir)) {
+            excluir();
+        } else if (act.getSource().equals(btConsultar)) {
+            if (cxPlaca.getText().trim().isEmpty()) {
+                JOptionPane.showMessageDialog(null, "O campo placa está em branco.", "ERRO", JOptionPane.ERROR_MESSAGE);
+            } else {
+                consultar();
+            }
+            throw new UnsupportedOperationException("Erro");
+        }
     }
 }

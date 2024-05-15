@@ -4,27 +4,23 @@
  */
 package com.mycompany.atividade01;
 
-import java.awt.FlowLayout;
+import java.awt.Dialog;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
+import javax.swing.*;
 
 /**
  *
  * @author Ewerton
  */
-public class JanelaPasseio extends JFrame {
+public class JanelaPasseio implements ActionListener {
 
     private static Passeio veiculoPasseio = new Passeio();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
-    private JFrame telaPasseio = new JFrame("Cadastro Passeio");
+    private JDialog telaPasseio = new JDialog();
     private JButton btCdastrar = new JButton();
     private JButton btLimpar = new JButton();
     private JButton btNovo = new JButton();
@@ -51,6 +47,7 @@ public class JanelaPasseio extends JFrame {
         JLabel rtVeloc = new JLabel("  Velocidade");
         JLabel rtPist = new JLabel("  Qtd. Pistoes");
         JLabel rtPotencia = new JLabel("  Potencia");
+        telaPasseio.setTitle("Cadastro de Passeio");
         telaPasseio.add(rtPas);
         telaPasseio.add(cxPas);
         telaPasseio.add(rtPlaca);
@@ -81,49 +78,19 @@ public class JanelaPasseio extends JFrame {
         telaPasseio.add(btNovo);
         telaPasseio.add(btLimpar);
         telaPasseio.add(btSair);
+        btSair.addActionListener(this);
+        btCdastrar.addActionListener(this);
+        btLimpar.addActionListener(this);
+        btNovo.addActionListener(this);
         telaPasseio.setSize(larg, alt);
         telaPasseio.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         telaPasseio.setLocationRelativeTo(null);
         telaPasseio.setLayout(new GridLayout(12, 2, 10, 10));
+        telaPasseio.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         telaPasseio.setVisible(true);
-
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
-                if (resp == 0) {
-                    telaPasseio.dispose();
-                }
-            }
-        }
-        );
-
-        btCdastrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    cadastrar();
-                } catch (VelocException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (VeicExistException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (VeiculoPlacaException ex) {
-                    Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NumberFormatException nfe) {
-                    JOptionPane.showMessageDialog(null, "Valor inválido  nos campos numericos");
-                }
-            }
-        }
-        );
-
-        btLimpar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                limpar();
-
-            }
-        }
-        );
     }
 
-    private void cadastrar() throws VelocException, VeicExistException, VeiculoPlacaException {
+    private void cadastrar() throws VelocException, VeicExistException {
         veiculoPasseio = new Passeio();
         veiculoPasseio.setPlaca(cxPlaca.getText());
         veiculoPasseio.setMarca(cxMarca.getText());
@@ -139,7 +106,7 @@ public class JanelaPasseio extends JFrame {
             JOptionPane.showMessageDialog(null, "Veículo incluído com sucesso");
             limpar();
         } else {
-            JOptionPane.showMessageDialog(null, "Placa repetida");
+            JOptionPane.showMessageDialog(null, "Já existe um veículo com esta placa");
             cxPlaca.setText("");
         }
     }
@@ -154,6 +121,34 @@ public class JanelaPasseio extends JFrame {
         cxVeloc.setText("");
         cxPist.setText("");
         cxPotencia.setText("");
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent act) {
+        if (act.getSource().equals(btSair)) {
+            int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
+            if (resp == 0) {
+                telaPasseio.dispose();
+            }
+
+        } else if (act.getSource().equals(btCdastrar)) {
+            try {
+                if (cxPlaca.getText().trim().isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "O campo placa está em branco.", "ERRO", JOptionPane.ERROR_MESSAGE);
+                } else {
+                    cadastrar();
+                }
+            } catch (VelocException ex) {
+                Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (VeicExistException ex) {
+                Logger.getLogger(JanelaPasseio.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Valor inválido  nos campos numericos", "ERRO", JOptionPane.ERROR_MESSAGE);
+            }
+        } else if ((act.getSource().equals(btLimpar)) || act.getSource().equals(btNovo)) {
+            limpar();
+        }
+        throw new UnsupportedOperationException("erro");
     }
 
 }

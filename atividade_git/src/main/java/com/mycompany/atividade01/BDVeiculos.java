@@ -33,6 +33,10 @@ public class BDVeiculos {
             return listaPasseio;
         }
        
+       public List<Carga> getBdCar(){
+            return listaCarga;
+        }
+       
        public static void excluirAll(){
             listaPasseio = new ArrayList<>();
             listaCarga = new ArrayList<>();

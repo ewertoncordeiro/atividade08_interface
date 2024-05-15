@@ -4,12 +4,14 @@
  */
 package com.mycompany.atividade01;
 
+import java.awt.Dialog;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -19,12 +21,12 @@ import javax.swing.JTextField;
  *
  * @author Ewerton
  */
-public class JanelaCarga extends JFrame{
+public class JanelaCarga implements ActionListener{
     
     
     private static Carga veiculoCarga = new Carga();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
-    private JFrame telaCarga = new JFrame("Cadastro Carga");
+    private JDialog telaCarga = new JDialog();
     private JButton btCdastrar = new JButton();
     private JButton btLimpar = new JButton();
     private JButton btNovo = new JButton();
@@ -53,6 +55,7 @@ public class JanelaCarga extends JFrame{
         JLabel rtVeloc = new JLabel("  Velocidade");
         JLabel rtPist = new JLabel("  Qtd. Pistoes");
         JLabel rtPotencia = new JLabel("  Potencia");
+        telaCarga.setTitle("Cadastro de Carga");
         telaCarga.add(rtPas);
         telaCarga.add(cxTara);
         telaCarga.add(rtCarga);
@@ -85,50 +88,19 @@ public class JanelaCarga extends JFrame{
         telaCarga.add(btNovo);
         telaCarga.add(btLimpar);
         telaCarga.add(btSair);
+        btSair.addActionListener(this);
+        btCdastrar.addActionListener(this);
+        btLimpar.addActionListener(this);
+        btNovo.addActionListener(this);
         telaCarga.setSize(larg, alt);
         telaCarga.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        telaCarga.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         telaCarga.setLocationRelativeTo(null); 
         telaCarga.setLayout(new GridLayout(13, 2, 10, 10));
         telaCarga.setVisible(true);
-        
-        
-        btSair.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
-                if (resp == 0) {
-                    telaCarga.dispose();
-                }
-            }
-        }
-        );
-
-        btCdastrar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                try {
-                    cadastrar();
-                } catch (VelocException ex) {
-                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (VeicExistException ex) {
-                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (VeiculoPlacaException ex) {
-                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
-                } catch (NumberFormatException nfe) {
-                    JOptionPane.showMessageDialog(null, "Valor inválido nos campos numericos");
-                }
-            }
-        }
-        );
-
-        btLimpar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                limpar();
-
-            }
-        }
-        );
     }
-
-    private void cadastrar() throws VelocException, VeicExistException, VeiculoPlacaException {
+        
+    private void cadastrar() throws VelocException, VeicExistException {
         veiculoCarga = new Carga();
         veiculoCarga.setPlaca(cxPlaca.getText());
         veiculoCarga.setMarca(cxMarca.getText());
@@ -139,12 +111,13 @@ public class JanelaCarga extends JFrame{
         veiculoCarga.getMotor().setPotencia(Integer.parseInt(cxPotencia.getText()));
         veiculoCarga.getMotor().setQtdPist(Integer.parseInt(cxPist.getText()));
         veiculoCarga.setTara(Integer.parseInt(cxTara.getText()));
+        veiculoCarga.setCargaMax(Integer.parseInt(cxCarga.getText()));
         veiculoCarga = bdpass.cadPas(veiculoCarga);
         if (veiculoCarga != null) {
             JOptionPane.showMessageDialog(null, "Veículo incluído com sucesso");
             limpar();
         } else {
-            JOptionPane.showMessageDialog(null, "Placa repetida");
+            JOptionPane.showMessageDialog(null, "Já existe um veículo com esta placa");
             cxPlaca.setText("");
         }
     }
@@ -162,5 +135,31 @@ public class JanelaCarga extends JFrame{
         cxPotencia.setText("");
     }
 
-    
+    @Override
+    public void actionPerformed(ActionEvent act) {
+            if (act.getSource().equals(btSair)) {
+            int resp = JOptionPane.showConfirmDialog(null, "Deseja sair?", "Saída", JOptionPane.YES_NO_OPTION);
+                if (resp == 0) {
+                    telaCarga.dispose();
+                }
+            } else if(act.getSource().equals(btCdastrar)){
+                   try {
+                    if (cxPlaca.getText().trim().isEmpty()) {
+                        JOptionPane.showMessageDialog(null, "O campo placa está em branco.","ERRO", JOptionPane.ERROR_MESSAGE);
+                    } else {
+                        cadastrar();
+                    }
+                } catch (VelocException ex) {
+                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (VeicExistException ex) {
+                    Logger.getLogger(JanelaCarga.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (NumberFormatException nfe) {
+                    JOptionPane.showMessageDialog(null, "Valor inválido nos campos numericos","ERRO", JOptionPane.ERROR_MESSAGE);
+                }
+           } else if ((act.getSource().equals(btLimpar)) || act.getSource().equals(btNovo)) {
+            limpar();
+        }
+        throw new UnsupportedOperationException("erro");
+    }
+
 }

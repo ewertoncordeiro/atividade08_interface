@@ -28,10 +28,7 @@ public abstract class Veiculo {
         motor = new Motor();
     }
 
-    public final void setPlaca(String placa) throws  VeiculoPlacaException{
-       if (placa.isEmpty()) {
-            throw new VeiculoPlacaException("Placa não pode estar vazia");
-       }
+    public final void setPlaca(String placa){
         this.placa = placa;
     }
 
@@ -50,7 +47,7 @@ public abstract class Veiculo {
     public final void setCor(String cor) {
         this.cor = cor;
     }
-  //tratando erro
+    
     public final void setVelocMax(float velocMax) throws VelocException {
        if (velocMax >= 80 && velocMax <= 110) {
 	this.velocMax = velocMax;

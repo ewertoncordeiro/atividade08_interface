@@ -18,7 +18,7 @@ public class JanelaPasseioImpressao implements ActionListener {
 
 
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
-    private JFrame telaPasseio = new JFrame("");
+    private JDialog telaPasseio = new JDialog();
     private String[] colunas = {"Placa", "Marca","Qtd Pass.", "Modelo", "Cor", "Qtd. Rodas", "Veloc. Max.", "Qtd. Pistões", "Potência"};
     private DefaultTableModel model = new DefaultTableModel(colunas, 0);
     private JTable tableDados = new JTable(model);
@@ -30,7 +30,7 @@ public class JanelaPasseioImpressao implements ActionListener {
     
    
     public void carregaJanela() {
-       
+         
         telaPasseio.setLayout(new GridLayout(0, 1, 10, 10));
         telaPasseio.setSize(larg, alt);
         telaPasseio.getContentPane().setBackground(Color.WHITE);               
@@ -53,6 +53,7 @@ public class JanelaPasseioImpressao implements ActionListener {
         opPanel.add(btImprimirTodos);
         opPanel.add(btExcluirTodos);
         opPanel.add(btSair);
+        telaPasseio.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         opPanel.setPreferredSize(new Dimension(600, 200));
         telaPasseio.add(opPanel);
         telaPasseio.setLocationRelativeTo(null); 
@@ -63,7 +64,7 @@ public class JanelaPasseioImpressao implements ActionListener {
     public void actionPerformed(ActionEvent act) {
 
         if (act.getSource().equals(btImprimirTodos)) {
-            imprimeDadosPessoa();
+            imprimeDadosPasseio();
         } else if (act.getSource().equals(btExcluirTodos)) {
             if (excluirTodosDados()) {
                 JOptionPane.showMessageDialog(null, "Dados removidos", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
@@ -75,7 +76,7 @@ public class JanelaPasseioImpressao implements ActionListener {
         }
     }
 
-    public void imprimeDadosPessoa() {
+    public void imprimeDadosPasseio() {
         
         if (bdpass.getBdPas().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Não há dados cadastrados.", "ERRO", JOptionPane.ERROR_MESSAGE);
