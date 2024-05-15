@@ -28,6 +28,20 @@ public class BDVeiculos {
         }
         return BDVeiculosUnic;
     }
+    
+       public List<Passeio> getBdPas(){
+            return listaPasseio;
+        }
+       
+       public List<Carga> getBdCar(){
+            return listaCarga;
+        }
+       
+       public static void excluirAll(){
+            listaPasseio = new ArrayList<>();
+            listaCarga = new ArrayList<>();
+           
+        }
 
     //metodos classe passeio
     //buscar
@@ -58,7 +72,7 @@ public class BDVeiculos {
     }
 
     // insert
-    public Passeio cadPas(Passeio pas) throws VeicExistException {
+    public Passeio cadPas(Passeio pas) {
         if (achaPlacaPasseio(pas) == null) {
             listaPasseio.add(pas);
             return pas;
@@ -85,7 +99,7 @@ public class BDVeiculos {
     }
 
     //delete
-    public Carga removePesCod(Carga car) {
+    public Carga removeCarCod(Carga car) {
         Carga car1 = achaPlacaCarga(car);
         if (car1 != null) {
             listaCarga.remove(car1);

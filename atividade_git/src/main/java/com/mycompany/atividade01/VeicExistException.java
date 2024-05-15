@@ -4,6 +4,8 @@
  */
 package com.mycompany.atividade01;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Ewerton
@@ -11,6 +13,7 @@ package com.mycompany.atividade01;
 public class VeicExistException extends Exception {
 
     public VeicExistException() {
-        System.out.println("Ja existe um veiculo com esta placa \n");
+        JOptionPane.showMessageDialog(null, "Já existe um veículo com esta placa");
+
     }
 }

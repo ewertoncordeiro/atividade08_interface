@@ -4,14 +4,16 @@
  */
 package com.mycompany.atividade01;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Ewerton
  */
-class VelocException extends Exception{
-    
-    public VelocException(){
- System.out.println("A velocidade maxima esta fora dos limites brasileiros  \n");
- }
+class VelocException extends Exception {
+
+    public VelocException() {
+        JOptionPane.showMessageDialog(null, "A velocidade maxima esta fora dos limites brasileiros");
+    }
 }
     
