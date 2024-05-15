@@ -19,7 +19,7 @@ import javax.swing.JTextField;
  *
  * @author Ewerton
  */
-public class JanelaCargaConsulta implements ActionListener{
+public class JanelaCargaConsulta implements ActionListener {
 
     private static Carga veiculoCarga = new Carga();
     private static BDVeiculos bdpass = BDVeiculos.gerarGerpes();
@@ -84,9 +84,18 @@ public class JanelaCargaConsulta implements ActionListener{
         btSair.addActionListener(this);
         btConsultar.addActionListener(this);
         btExcluir.addActionListener(this);
+        cxTara.setEditable(false);
+        cxMarca.setEditable(false);
+        cxModelo.setEditable(false);
+        cxCor.setEditable(false);
+        cxRoda.setEditable(false);
+        cxVeloc.setEditable(false);
+        cxPist.setEditable(false);
+        cxPotencia.setEditable(false);
+        cxCarga.setEditable(false);
         telaCarga.setSize(larg, alt);
         telaCarga.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-         telaCarga.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        telaCarga.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         telaCarga.setLocationRelativeTo(null);
         telaCarga.setLayout(new GridLayout(12, 2, 10, 10));
         telaCarga.setVisible(true);

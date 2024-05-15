@@ -11,7 +11,7 @@ package com.mycompany.atividade01;
 public class Teste {
 
     public static void main(String args[]) {
-        JanelaPrincipal jpass = new JanelaPrincipal();
-        jpass.carregaJanela();
+        JanelaPrincipal jprin = new JanelaPrincipal();
+        jprin.carregaJanela();
     }
 }
